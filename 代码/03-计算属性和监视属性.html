@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>计算属性和监事属性</title>
+  </head>
+  <body>
+    <div id="abc">
+      姓：<input
+        type="text"
+        placeholder="First Name"
+        v-model="firstName"
+      /><br />
+      名：<input type="text" placeholder="Last Name" v-model="lastName" /><br />
+      姓名1：<input type="text" placeholder="Full Name" v-model="fullName1" />
+      <br />
+      姓名2：<input type="text" placeholder="Full Name" v-model="fullName2" />
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <!-- 原生js -->
+    <!-- <script>
+      const person = {
+        firstName: "张",
+        lastName: "三",
+      };
+      Object.defineProperty(person, "fullName1", {
+        get() {
+          console.log(this);
+
+          return this.firstName + "-" + this.lastName;
+        },
+        set(value) {
+          console.log(value);
+          console.log(this);
+
+          let [firstName, lastName] = value.split("-");
+          this.firstName = firstName;
+          this.lastName = lastName;
+        },
+      });
+      person.firstName = "李";
+      console.log(person.fullName1);
+
+      person.fullName1 = "易烊-千玺";
+      console.log(person);
+    </script> -->
+    <script>
+      new Vue({
+        el: "#abc",
+        data: {
+          firstName: "张",
+          lastName: "三",
+          fullName2: "张-三",
+        },
+        computed: {
+          fullName1: {
+            get() {
+              return this.firstName + "-" + this.lastName;
+            },
+            set(value) {
+              let [firstName, lastName] = value.split("-");
+              this.firstName = firstName;
+              this.lastName = lastName;
+            },
+          },
+        },
+        watch: {
+          firstName(value) {
+            this.fullName2 = value + "-" + this.lastName;
+          },
+          lastName(value) {
+            this.fullName2 = this.firstName + "-" + value;
+          },
+          fullName2(value) {
+            let [firstName, lastName] = value.split("-");
+            this.firstName = firstName;
+            this.lastName = lastName; 
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

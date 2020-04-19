@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>计算属性和监视属性</title>
+  </head>
+  <body>
+    <div id="abc">
+      姓：<input type="text" v-model="firstName" /><br />
+      名：<input type="text" v-model="lastName" /><br />
+      姓名1：<input type="text" v-model="fullName1" />
+      <br />
+      姓名2：<input type="text" v-model="fullName2" />
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#abc",
+        data: {
+          firstName: "张",
+          lastName: "三",
+          fullName2: "张-三",
+        },
+        computed: {
+          fullName1: {
+            get() {
+              return this.firstName + "-" + this.lastName;
+            },
+            set(value) {
+              let [firstName, lastName] = value.split("-");
+              this.firstName = firstName;
+              this.lastName = lastName;
+            },
+          },
+        },
+        watch: {
+          firstName(newName, olderName) {
+            this.fullName2 = newName + "-" + this.lastName;
+          },
+          lastName(newName, olderName) {
+            this.fullName2 = this.firstName + "-" + newName;
+          },
+          fullName2(newName, olderName) {
+            let [firstName, lastName] = newName.split("-");
+            this.firstName = firstName;
+            this.lastName = lastName;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

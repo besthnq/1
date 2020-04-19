@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="box">
+      <h3>双大括号表达式</h3>
+      <p>{{msg}}</p>
+      <p>{{aaa}}</p>
+      <br />
+      <h3>指令1：强制数据绑定</h3>
+      <a v-bind:href="url">去百度</a>
+      <a :href="url">找度娘</a>
+      <br />
+      <h3>指令2：绑定事件监听</h3>
+      <button v-on:click="showMsg">按钮1</button>
+      <button @click="showMsg">按钮2</button>
+      <input type="text" @input="handleInput" v-model="msg" />
+      <input type="text" @change="handleChange" />
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        el: "#box",
+        data: {
+          msg: "加油加油~",
+          aaa: "吃得苦中苦方为人上人",
+          url: "http://www.baidu.com",
+        },
+        methods: {
+          showMsg(event) {
+            console.log("hellow~~");
+            console.log(event);
+          },
+          handleInput(event) {
+            console.log("input事件触发");
+          },
+          handleChange(event) {
+            console.log(this);
+            console.log("change事件触发");
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

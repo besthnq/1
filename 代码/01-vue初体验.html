@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="abc">
+      <input type="text" v-model="msg" />
+      <p>{{msg}}</p>
+      <p>{{aaa}}</p>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+      const vm = new Vue({
+        // el: "#abc",
+        data: {
+          msg: "这是第一个vue练习",
+          aaa: "哈哈哈哈哈哈，加油",
+        },
+      }).$mount("#abc");
+      console.log(vm);
+    </script>
+  </body>
+</html>
