@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>列表排序练习</title>
+  </head>
+  <body>
+    <div id="demo">
+      <ul>
+        <li v-for="(person) in persons" :key="person.id">
+          {{person.id}} ~ {{person.name}} ~ {{person.age}}
+        </li>
+      </ul>
+      <button @click="order1">升序</button>
+      <button @click="order2">降序</button>
+      <!-- <button @click="order0">原序</button> -->
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          orderNum: 0,
+          persons: [
+            { id: 1, name: "jack", age: 20 },
+            { id: 3, name: "rose", age: 18 },
+            { id: 5, name: "jerry", age: 16 },
+            { id: 7, name: "tom", age: 18 },
+            { id: 8, name: "liqiang", age: 38 },
+          ],
+        },
+
+        methods: {
+          order1() {
+            let persons = this.persons;
+            persons.sort((a, b) => {
+              return a.age - b.age;
+            });
+          },
+          order2() {
+            let persons = this.persons;
+            persons.sort((a, b) => {
+              return b.age - a.age;
+            });
+          },
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

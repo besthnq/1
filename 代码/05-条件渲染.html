@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>条件渲染</title>
+  </head>
+  <body>
+    <div id="demo">
+      <h2>v-if指令</h2>
+      <p v-if="a">aaa</p>
+      <p v-else="!a">bbb</p>
+      <h2>v-else-if指令</h2>
+      <p v-if="!a">aaa</p>
+      <p v-else-if="b">bbb</p>
+      <p v-else>ccc</p>
+      <h2>v-show指令</h2>
+      <p v-show="!a">aaa</p>
+      <p v-show="a">bbb</p>
+      <button @click="a = !a">点击切换</button>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          a: true,
+          b: false,
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

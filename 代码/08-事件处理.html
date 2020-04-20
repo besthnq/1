@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件处理</title>
+  </head>
+  <body>
+    <div id="abc">
+      <h2>绑定监听</h2>
+      <button @click="showMsg1">按钮1</button>
+      <button @click="showMsg2('1','2')">按钮2</button>
+      <button @click="showMsg3('3',$event)">按钮3</button>
+
+      <h2>事件修饰符</h2>
+      <a href="http://www.baidu.com" @click.prevent="test1">去百度</a>
+      <div
+        @click="test2"
+        :style="{backgroundColor:'pink',width:'200px',height:'200px'}"
+      >
+        <div
+          @click.stop="test3"
+          :style="{backgroundColor:'yellowgreen',width:'100px',height:'100px'}"
+        ></div>
+      </div>
+
+      <h2>按键修饰符</h2>
+      <input type="text" @keyup.13='test4'>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          num: 0,
+        },
+        methods: {
+          showMsg1(event) {
+            console.log(event);
+            console.log("111111");
+          },
+          showMsg2(a, b) {
+            // console.log(event); //window.event 全局变量，不建议使用
+            console.log("2222222");
+            console.log(a, b);
+          },
+          showMsg3(c, event) {
+            console.log(c, event);
+            console.log("33333333");
+          },
+          test1() {
+            console.log("test1");
+          },
+          test2() {
+            console.log("test2");
+          },
+          test3() {
+            console.log("test3");
+          },
+          test4() {
+            console.log("test4");
+          },
+        },
+      }).$mount("#abc");
+    </script>
+  </body>
+</html>

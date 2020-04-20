@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命周期案例</title>
+  </head>
+  <body>
+    <div id="demo">
+      <p :style="{opacity:opacity,backgroundColor:'pink'}">透明度变化0-1-0</p>
+      <button @click="died">点击销毁</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          opacity: 0,
+          timer: null,
+        },
+        methods: {
+          died() {
+            this.$destroy();
+            console.log(this.opacity);
+          },
+        },
+        created() {
+          this.timer = setInterval(() => {
+            let opacity = this.opacity;
+            opacity += 0.02;
+            if (opacity >= 1) {
+              opacity = 0;
+            }
+            this.opacity = opacity;
+          }, 100);
+        },
+        beforeDestroy() {
+          clearInterval(this.timer);
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

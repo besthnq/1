@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>生命周期</title>
+  </head>
+  <body>
+    <div id="demo">
+      <input type="text" v-model="a" />
+      <p ref="ref">{{a}}</p>
+      <button @click="destroy">销毁</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          a: 111,
+        },
+        methods:{
+            destroy(){
+                this.$destroy();
+            }
+        },
+        beforeCreate() {
+          // console.log(this.a);
+          console.log("beforeCreate~~");
+        },
+        created() {
+          // console.log(this.a);
+          console.log("created~~");
+        },
+        beforeMount() {
+          console.log("beforeMount~~");
+        },
+        mounted() {
+          console.log("mounted~~");
+        },
+        beforeUpdate() {
+          console.log(this.$refs.ref.innerText);
+          console.log("beforeUpdate~~");
+        },
+        updated() {
+          console.log(this.$refs.ref.innerText);
+          console.log("updated~~");
+        },
+        beforeDestroy() {
+          console.log("beforeDestroy~~");
+        },
+        destroyed() {
+          console.log("destroyed~~");
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

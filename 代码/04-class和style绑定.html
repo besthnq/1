@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>class和style绑定</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .green {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="abc">
+      <h2>class和style练习</h2>
+      <p :class="className">锄禾日当午</p>
+      <button @click="changeColor1">点击变换颜色</button>
+
+      <p :class="{red:isRed,green:!isRed}">汗滴禾下土</p>
+      <button @click="changeColor2">点击变换颜色</button>
+
+      <p :class="['red','green']">谁知盘中餐</p>
+      
+
+      <p :style="{fontSize:size +'px',backgroundColor:'pink'}">粒粒皆辛苦</p>
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          className: "red",
+          isRed: true,
+          size:30,
+        },
+        methods: {
+          changeColor1() {
+            this.className = this.className === "red" ? "green" : "red";
+          },
+          changeColor2() {
+            this.isRed = !this.isRed;
+          },
+          
+        },
+      }).$mount("#abc");
+    </script>
+  </body>
+</html>

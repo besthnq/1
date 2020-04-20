@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>表单绑定</title>
+  </head>
+  <body>
+    <div id="demo">
+      <form action="/xxx" @submit.prevent="submit">
+        <span>用户名：</span>
+        <input type="text" v-model="username" />
+        <br />
+        <span>密码：</span>
+        <input type="password" v-model="password" />
+        <br />
+        <span>性别：</span>
+        <input type="radio" id="female" v-model="sex" value="女" />
+        <label for="female">女</label>
+        <input type="radio" id="male" v-model="sex" value="男" />
+        <label for="male">男</label><br />
+        <span>爱好：</span>
+        <input type="checkbox" id="basket" v-model="hobby" value="basket" />
+        <label for="basket">篮球</label>
+        <input type="checkbox" id="foot" v-model="hobby" value="foot" />
+        <label for="foot">足球</label>
+        <input type="checkbox" id="pingpang" v-model="hobby" value="pingpang" />
+        <label for="pingpang">乒乓</label>
+        <br />
+        <span>城市: </span>
+        <select v-model="cityId">
+          <option value="">未选择</option>
+          <option v-for="(city) in cities" :key="city.id" :value="city.id"
+            >{{city.name}}</option
+          >
+        </select>
+        <br />
+        <span>介绍: </span>
+        <textarea rows="10" v-model="info"></textarea>
+        <br />
+        <br />
+
+        <input type="submit" value="注册" />
+      </form>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          username: "",
+          password: "",
+          sex: "",
+          hobby: [],
+          cities: [
+            { id: 1, name: "北京" },
+            { id: 2, name: "深圳" },
+            { id: 3, name: "上海" },
+          ],
+          cityId: "",
+          info:"",
+        },
+        methods: {
+          submit() {
+            console.log(this);
+          },
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

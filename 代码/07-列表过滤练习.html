@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>列表过滤练习</title>
+  </head>
+  <body>
+    <div id="demo">
+      <input type="text" v-model="searchName" />
+      <ul>
+        <li v-for="(person) in filterPersons" :key="person.id">
+          {{person.id}} ~ {{person.name}} ~ {{person.age}}
+        </li>
+      </ul>
+      <button @click="orderNum=1">升序</button>
+      <button @click="orderNum=2">降序</button>
+      <button @click="orderNum=0">原序</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        
+        data: {
+          searchName:'',
+          orderNum:0,
+          persons: [
+            { id: 1, name: "jack", age: 20 },
+            { id: 3, name: "rose", age: 18 },
+            { id: 5, name: "jerry", age: 16 },
+            { id: 7, name: "tom", age: 18 },
+            { id: 8, name: "liqiang", age: 38 },
+          ],
+        },
+        computed:{
+          filterPersons(){
+            const {persons,searchName,orderNum} = this;
+            const filterPersons = persons.filter((person) => {
+              return person.name.indexOf(searchName) != -1;
+            });
+
+            switch (orderNum) {
+              case 1:
+              filterPersons.sort((a,b)=>{
+                  return a.age - b.age;
+                })
+                break;
+              case 2:
+                filterPersons.sort((a,b)=> {
+                  return b.age - a.age;
+                })
+                break;
+            
+            }
+            return filterPersons;
+          }
+        },
+        
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>
