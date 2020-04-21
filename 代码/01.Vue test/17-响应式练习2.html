@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>响应式练习2</title>
+  </head>
+  <body>
+    <div id="demo">
+      <p>{{num}}</p>
+      <button @click="num++">按钮</button>
+      <ul>
+        <li v-for="(value, key) in person">
+          {{key}} -- {{value}}
+        </li>
+      </ul>
+      <button @click="test">按钮</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data() {
+          this.num = 0;
+          return {
+            num: 5,
+            person: {
+              name: "hh",
+            },
+          };
+        },
+        methods: {
+          test() {
+            // this.person.age = 18
+            this.$set(this.person, "age", 18);
+          },
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

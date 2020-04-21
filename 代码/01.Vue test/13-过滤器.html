@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过滤器</title>
+</head>
+<body>
+    <div id="demo1">
+        <p>{{nowTime | dateFormat('YYYY年MM月DD日')}}</p>
+        <p>{{nowTime | dateFormat2('HH:mm:ss')}}</p>
+    </div>
+  
+    <script src="./js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/dayjs/1.8.24/dayjs.min.js"></script>
+
+    <script>
+        Vue.filter('dateFormat2',function(value,formatStr='YYYY-MM-DD HH:mm:ss'){
+            return dayjs(value).format(formatStr)
+        })
+
+       new Vue({
+        data(){
+            return{
+                nowTime:Date.now(),
+            }
+        },
+        filters:{
+            dateFormat(value,formatStr='YYYY-MM-DD HH:mm:ss'){
+                return dayjs(value).format(formatStr)
+            }
+        }
+       }).$mount('#demo1')
+    </script>
+</body>
+</html>

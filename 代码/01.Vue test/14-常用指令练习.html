@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>常用指令练习</title>
+  </head>
+  <body>
+    <div id="demo">
+      <p v-text="text"></p>
+      <p v-html="text"></p>
+      <br />
+      <p>{{content}}</p>
+      <p v-once>{{content}}</p>
+      <button @click="content++">按钮</button>
+      <br />
+      <input type="text" ref="msgIput" />
+      <button @click="test">点击按钮</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data() {
+          return {
+            text: "<h3>指令练习~</h3>",
+            content: 1,
+          };
+        },
+        methods: {
+          test() {
+            console.log(this.$refs);
+            console.log(this.$refs.msgIput);
+            console.log(this.$refs.msgIput.value);
+          },
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

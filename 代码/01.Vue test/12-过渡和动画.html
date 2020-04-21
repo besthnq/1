@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>过渡和动画</title>
+    <style>
+      .fade1-enter,
+      .fade1-leave-to {
+        opacity: 0;
+        transform: translateX(200px);
+      }
+
+      .fade1-enter-to,
+      .fade1-leave {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .fade1-enter-active,
+      .fade1-leave-active {
+        transition: opacity 2s, transform 2s;
+      }
+      .bounce-enter-active {
+        animation: bounce-in 0.5s;
+      }
+      .bounce-leave-active {
+        animation: bounce-in 0.5s reverse;
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo">
+      <transition name="fade1">
+        <p v-if="isShow">过渡练习</p>
+      </transition>
+      <button @click="isShow=!isShow">按钮</button>
+    </div>
+
+    <div id="example-2">
+      <transition name="bounce">
+        <p v-if="show">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
+          facilisis enim libero, at lacinia diam fermentum id. Pellentesque
+          habitant morbi tristique senectus et netus.
+        </p>
+      </transition>
+      <button @click="show = !show">Toggle show</button>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      new Vue({
+        data() {
+          return {
+            isShow: true,
+          };
+        },
+      }).$mount("#demo");
+
+      new Vue({
+        data() {
+          return {
+            show: true,
+          };
+        },
+      }).$mount("#example-2");
+    </script>
+  </body>
+</html>

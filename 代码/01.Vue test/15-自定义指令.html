@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义指令</title>
+  </head>
+  <body>
+    <div id="demo">
+      <p v-text="msg"></p>
+      <p v-upper-text="msg"></p>
+      <p v-lower-text="msg"></p>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script>
+      Vue.directive("lower-text", function (el, binding) {
+        el.textContent = binding.value.toLowerCase();
+      });
+
+      new Vue({
+        data() {
+          return {
+            msg: "Hello World~",
+          };
+        },
+        directives: {
+          "upper-text"(el, binding) {
+            console.log(el, binding);
+            el.textContent = binding.value.toUpperCase();
+          },
+          // 'lower-text'(el,binding){
+          //     el.textContent=binding.value.toLowerCase();
+          // }
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
+</html>

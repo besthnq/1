@@ -83,18 +83,18 @@
 
   作用：向页面输出数据（**将数据显示到标签内部**）
 
-- 指令语法 指令：v- 开头的自定义标签属性
+- <p style='background-color:pink;'>指令语法</p> 指令：v- 开头的自定义标签属性
+1. v-model="JS 表达式"\_
 
-  1. v-model="JS 表达式"\_
+- 作用：用于实现 **双向数据绑定**
+  - <u>常用于表单中自动收集数据，表单中注意value设定。提交表单 form 标签绑定@submit.prevent 来接收</u>
+  
+2. v-bind:xxx="yyy"\_
 
-  - 作用：用于实现 **双向数据绑定**
-  - 常用于表单中自动收集数据，表单中注意value设定
-
-  2. v-bind:xxx="yyy"\_
-
-    - 简写： _:xxx='yyy'_
+  - 简写： _:xxx='yyy'_
     - 作用：指定变化的属性值。**强制数据绑定** (**将数据显示在标签属性上**）
   3. v-on:click='yyy'\_
+
     - 简写： _@click='yyy'_
     - 作用：绑定指定事件名的回调函数。 **绑定事件监听**
     - 4种传参情况：
@@ -106,7 +106,8 @@
       - 阻止事件默认行为：event.preventDefault()    >>  *@click.prevent="method"*
       - 阻止事件冒泡：event.stopPropagation()    >>  *@click.stop="method"*
     - 按键修饰符：
-      - *@keyup.13="method"*
+      - *@keyup.13="method"*   适用于所有键
+    - *@keyup.enter="xxx"*   只有少部分键可以使用
 
   4. **条件渲染指令** *v-if  v-else  v-show*
    - v-if和v-else是配合使用的：
@@ -116,8 +117,8 @@
   - v-if 和 v-show 的区别
     - 相同：能实现DOM元素切换显示
     - 不同：v-if 在内存中删除标签对象来实现隐藏，重新显示时会重新创建。DOM树中只有要显示的DOM元素，没有隐藏的；  v-show 通过样式display来控制显示和隐藏的，显示标签没有样式，隐藏标签会加上 display: none。DOM树中所有DOM元素都有，只是隐藏的DOM元素有一个隐藏样式而已
-  如果要频繁切换样式显示，选择 v-show。
-  因为v-if要进行更多DOM操作：删除DOM元素，重新创建新的DOM元素，而v-show只要切换style样式即可
+    如果要频繁切换样式显示，选择 v-show。
+    因为v-if要进行更多DOM操作：删除DOM元素，重新创建新的DOM元素，而v-show只要切换style样式即可
   5. **列表渲染指令**   *v-for*
    - v-for 遍历数组
      - <li v-for="(person, index) in persons" :key="person.id">{{xxx}}</li>
@@ -125,6 +126,41 @@
      - <li v-for="(value, key) in person" :key="key">{{xxx}}</li>
    - **注意：遍历的每一项元素需要有一个唯一的key属性：值有id用id，没有id考虑使用index**
 
+  6. *v-once*
+      只渲染一次，后面更新都不会再重新渲染（性能优化~）
+  7.  *v-text*
+      v-text 内部找到元素，调用 元素.textContent，会当做纯文本解析
+  8.  *v-html*    
+      v-html 内部找到元素，调用 元素.innerHTML，会当做HTML解析
+
+
+9. 自定义指令
+   * 注册全局指令
+      ```vue
+      Vue.directive('my-directive', function(el, binding){
+        el.innerHTML = binding.value.toupperCase()
+      })
+      ```
+   * 注册局部指令
+      ```vue
+      directives : {
+        'my-directive' : {
+          bind (el, binding) {
+            el.innerHTML = binding.value.toupperCase()
+         }  //el 就是绑定指令的DOM元素;binding 是一个对象，包含指令的所有信息
+      }
+      }
+      ```
+    ```
+   
+    ```
+  * 使用指令
+    *v-my-directive='xxx'*
+
+  常用属性：ref
+  ref : 为某个元素注册一个唯一标识, vue对象通过$refs属性访问这个元素对象
+  作用：能获取DOM元素
+  注意：一般能不用就不用，vue不建议直接操作DOM, 性能优化
 
 
 
@@ -317,6 +353,15 @@ watch 值：对象
 什么时候使用watch属性？当data属性变化时需要发送AJAX请求，才需要使用（data中必须定义这个属性）
 $watch 可以取代
 
+filters 值：对象
+作用：对要显示的数据进行特定格式化后再显示。详见11.
+
+directives 值：对象
+作用：自定义指令
+
+template 值：字符串
+作用：定义组件要渲染的模板页面
+
 特点：data和methods上的属性和方法，最终都会直接挂载到vm/this/Vue实例对象上~
 ```
 
@@ -326,11 +371,21 @@ $watch 可以取代
 
 作用：class/style绑定就是专门用来实现动态样式效果的
 
+默认情况下使用 class，当样式的值是动态确定，用 style
+
 **class绑定: :class='xxx'**
 
-* xxx是字符串 ：一般用于类名不确定时
-* xxx是对象：一般用于类名确定时
+* xxx是字符串 ：一般用于类名不确定的单个样式 
+
+  *<p :class="className">xxx</p>*
+
+* xxx是对象：一般用于类名确定的单个样式
+
+  *<p :class="{red: isRed, green: !isRed}">xxx</p>*
+
 * xxx是数组：一般用于多个确定的动态类名
+
+  *<p :class="['red', 'green']">xxx</p>*
 
 **style绑定：**  *:style="{ color: activeColor, fontSize: fontSize + 'px' }"*
 
@@ -390,3 +445,267 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
 
   内存泄漏：数据占用内容，但无实际用途。DOM事件、定时器、意外全局变量等
   内存溢出：预期使用的内存，超出实际内存
+
+
+#### 10.过渡和动画
+1. vue提供组件transition，专门用来做过度效果 。会给目标元素添加/移除特定的class
+2. 基本过渡动画的编码
+   * 在目标元素外包裹<transition name="xxx">
+   * 定义class样式
+     * 指定过渡样式: transition
+     * 指定隐藏时的样式: opacity/其它
+3. 过渡的类名
+   * xxx-enter-active: 指定显示的transition
+   * xxx-leave-active: 指定隐藏的transition
+   * xxx-enter: 指定隐藏时的样式
+   * 默认类名：v-enter v-enter-to v-enter-active v-leave v-leave-to v-leave-active
+
+#### 11.过滤器
+
+功能: 对要显示的数据进行特定格式化后再显示
+<u>并没有改变原本的数据, 可是产生新的对应的数据</u>
+全局过滤器：对所有vm生效
+局部过滤器: 只对当前vm生效
+过滤器使用：
+
+* 定义过滤器
+  
+  * `Vue.filter(filterName, function(value[,arg1,arg2,...]{return newValue})`
+
+* 使用过滤器
+
+  * `<div>{{myData | filterName}}</div>`
+  * `<div>{{myData | filterName(arg)}}</div>`
+  
+
+使用dateFormat过滤器对nowTime处理，最终显示的是过滤器的返回值
+时间格式化处理，往往使用工具函数库：moment、dayjs（常用）、date-fns
+
+```html
+ <div id="test">
+      <h2>显示格式化的日期时间</h2>
+      <p>{{nowTime | dateFormat}}</p>
+      <p>{{nowTime | dateFormat('YYYY年MM月DD日')}}</p>
+      <p>{{nowTime | dateFormat('HH:mm:ss')}}</p>
+      <p>{{nowTime | dateFormat2}}</p>
+    </div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/dayjs/1.8.24/dayjs.min.js"></script>
+    <script>
+      // 全局过滤器：对所有vm生效
+      Vue.filter("dateFormat2", function (value) {
+        return dayjs(value).format("HH:mm");
+      });
+
+      new Vue({
+        data: {
+          nowTime: Date.now(), 
+        },
+        filters: {     //局部过滤器    
+          dateFormat(value, formatStr = "YYYY-MM-DD HH:mm:ss") {
+            return dayjs(value).format(formatStr);
+          },
+        },
+      }).$mount("#test");
+```
+
+#### 12.数据代理
+
+当定义实例化对象 `new Vue({ data: { isShow: true } })` 时， Vue 内部解析时会对 data 中的数据进行数据代理。Vue 会自动给 vm（this/实例对象）添加一个直接属性 isShow ，并且设置该属性的 getter 和 setter `类似于~ Object.defineProperty(vm, 'isShow', { get() {}, set() {} })`
+所以这些数据具备一些特点，本身是没有值的
+当读取 isShow 属性的值时，内部会自动调用 getter 方法并返回值出去（实际得到的是 getter 方法的返回值）
+当设置 isShow 属性的值时，内部会自动调用 setter 方法，更新值并更新模板页面
+
+
+#### 13.响应式数据
+
+1. 什么是响应式数据？
+   数据一旦发生变化，会自动更新页面/数据
+   （页面输入数据发生变化，会自动更新 JS 中 data 数据 / data 数据发生变化，会自动更新页面）
+
+2. 哪些数据是响应式数据？
+   Vue 中 data 中所有数据都是响应式数据
+   data中数据分为两种情况探讨：
+   数组数据：内部也会 setter 监视，但是会有例外：
+      this.persons[0] = { id: 7, name: "jack" };
+      解决： this.persons.splice(0, 1, { id: 7, name: "jack" });   变异方法
+   对象数据/其他类型数据：内部都会给属性添加 setter 进行监视，值一旦发生变化，即会更新值也会触发页面的更新
+
+3. 响应式和非响应式
+   响应式数据
+      data 中的所有数据（data 对象，data 函数返回的对象）
+      通过 vm.$set() / Vue.set() 设置的属性数据
+   非响应式数据   
+      手动给vm添加属性  
+        this.msg2 = xxx
+      手动通过 . 方式给data数据添加额外的属性（得使用vm.$set()解决）
+        this.person.age = 18
+
+#### 14.组件
+1. 面试题：为什么组件中的data必须是函数形式？
+   Vue解析组件标签时，会找到组件的构造函数，创建组件实例对象，根据实例对象的内容进行显示。
+   如果data使用的是对象形式，那么创建组件实例对象，进行数据代理时，组件实例对象代理的data数据是同一个对象。那么只要有一个变化，全都变。
+   每个组件应该要单独使用自己的数据。所以data要使用函数。那么创建组件实例对象，进行数据代理，会调用data函数得到新data对象从而进行数据代理，每一个组件实例对象得到的是新的对象，互不影响
+
+2. 总结
+    定义组件 组件构造函数 Vue.extend(options/配置对象)
+    注册组件 Vue.component(组件名称, 组件构造函数)
+    定义并注册组件（全局组件） Vue.component(组件名称, options/配置对象)
+    options/配置对象 data、methods、computed、watch、filters、directives、template
+    使用组件 以标签组件使用 <xxx></xxx>
+    当你使用组件标签时，内部会找到组件的构造函数，创建组件实例对象
+
+## Vue 脚手架
+
+### webpack
+
+一个现代 JavaScript 应用程序的静态模块打包工具
+
+1. 5 个核心概念
+
+- 入口 entry
+  - 指示以哪个文件开始打包
+  - 注意：以入口文件为起点，构建依赖关系图，将所有依赖的文件全部打包进来
+- 输出 output
+  - 打包后资源输出到哪里去
+- 加载器 loader
+  - webpack 工具本身只能打包 js、json 资源，其他资源打包不了
+  - 需要借助 loader 解析其他资源，webpack 才能打包这些其他资源
+- 插件 plugins
+  - 执行更加强大的任务（相对 loader 来讲）
+- 模式 mode
+  - 开发模式 development
+  - 生产模式 production
+    - 相同点：都能解析 ES6 模块化
+    - 不同点：production 多一个压缩 JS 代码
+
+2. 基本使用
+
+- 初始化 package.json 文件
+
+  - npm init
+  - npm init -y
+
+  ```json
+  {
+    "name": "vue-cli", // 包名
+    "version": "1.0.0", // 包的版本号
+    "scripts": {
+      // 启动指令
+      "start": "xxx", // npm start
+      "dev": "xxx", // npm run dev
+      "build": "xxx" // npm run build
+    },
+    /*
+      如果你把开发依赖的包下载到生产依赖会不会有问题？反之会不会有问题？
+        不会影响任何功能。
+      生产依赖：项目运行时需要使用的依赖（vue，jquery）
+      开发依赖：webpack构建打包需要使用的依赖（webpack，babel）
+        解决：直接重下（注意依赖）
+    */
+    "dependencies": {}, // 生产依赖
+    "devDependencies": {} // 开发依赖
+  }
+  ```
+
+- 下载依赖包
+
+  - npm i webpack webpack-cli -D
+
+- 定义 webpack 配置文件
+
+  - webpack.config.js
+
+- 项目根目录
+  - 配置文件就在项目根目录
+  - 下载包也在项目根目录下
+  - 启动 webpack 指令也是在项目根目录
+  - 哪个目录是项目根目录？
+    - 02.定义 vue 脚手架
+    - 包含整个项目的最近的目录（package.json 文件所在的目录）
+
+### webpack的配置文件
+所有JS构建工具都是基于NODEJS工作的，所以模块化默认使用commonjs。使用commonjs模块化语法向外暴露一个配置对象（属性名固定的对象）。里面配置不能写错，一旦写错单词就会报错（代码写完检查一遍~）
+  开发环境：让代码在内存中编译运行即可，没有输出文件到本地
+  生产环境：输出打包后的资源文件到本地
+
+1. 处理js资源
+    babel  一个 JavaScript 编译器，可以将ES6以上语法编译成ES5以下语法~，作用用来做JS兼容性处理
+
+    - 下载依赖包（loader只需要下载不需要引入）
+      npm i babel-loader @babel/core @babel/preset-env -D 
+    - 配置loader  
+    ```js
+    {
+        test: /\.js$/, // 规则对哪些文件生效
+        // exclude: /node_modules/, // 排除node_modules文件，其他文件都检查
+        include: [resolve("src")], // 包含src下面的文件，只检查包含的文件，而其他文件不检查
+        // use: {}, 如果只要使用一个loader 用{}
+        // use: []  如果要使用多个loader 用[]
+        use: {
+          // 需要下载
+          loader: "babel-loader",
+          options: {
+            // 配置对象
+            presets: ["@babel/preset-env"], // 预设，babel要干什么活
+            plugins: [], // 插件
+          },
+        },
+      },
+    ```
+
+2. 处理css资源
+    - 下载依赖包（loader只需要下载不需要引入）
+        npm i style-loader css-loader -D
+    - 配置loader  
+    ```js
+    {
+        test: /\.css$/,
+        include: [resolve("src")],
+        use: [
+          // 执行顺序：从下到上 / 从右到左
+          // 动态创建style标签，将js中css字符串添加，插入head中显示
+          "style-loader",
+          // 将css编译成js字符串，以commonjs规则插入到js文件中
+          "css-loader",
+        ],
+      },
+    ```
+
+3. 处理图片资源
+    - 下载依赖包（loader只需要下载不需要引入）
+        npm i url-loader file-loader -D
+    - 配置loader  
+    ```js
+    {
+        test: /\.(png|gif|jpe?g|webp)$/,
+        include: [resolve("src")],
+        use: {
+          loader: "url-loader",
+          options: {
+            /*
+              大小小于10kb以下的图片会被base64处理
+              base64:
+                1. 一种图片的优化手段（只针对小图片做优化）
+                2. 将图片编译成base64编码的字符串
+                  优点：随着html文件加载一起加载，不需要额外发送请求（减少请求数量，降低服务器压力）
+                  缺点：体积会变得更大
+            */
+            limit: 10 * 1024,
+            /*
+              对输出文件进行重命名
+              [hash:10] hash（根据文件生成唯一id值）取10位
+              [ext] 使用原来文件扩展名
+            */
+            name: "static/media/[hash:10].[ext]",
+          },
+        },
+      },
+    ```
+
+4. 处理html资源
+   
+5. 处理其他资源（字体图标~）
+   
+6. 自动化
+   
