@@ -84,12 +84,12 @@
   作用：向页面输出数据（**将数据显示到标签内部**）
 
 - <p style='background-color:pink;'>指令语法</p> 指令：v- 开头的自定义标签属性
-1. v-model="JS 表达式"\_
+1. v-model="JS 表达式"
 
 - 作用：用于实现 **双向数据绑定**
   - <u>常用于表单中自动收集数据，表单中注意value设定。提交表单 form 标签绑定@submit.prevent 来接收</u>
   
-2. v-bind:xxx="yyy"\_
+2. v-bind:xxx="yyy"
 
   - 简写： _:xxx='yyy'_
     - 作用：指定变化的属性值。**强制数据绑定** (**将数据显示在标签属性上**）
@@ -121,9 +121,9 @@
     因为v-if要进行更多DOM操作：删除DOM元素，重新创建新的DOM元素，而v-show只要切换style样式即可
   5. **列表渲染指令**   *v-for*
    - v-for 遍历数组
-     - <li v-for="(person, index) in persons" :key="person.id">{{xxx}}</li>
+     - `<li v-for="(person, index) in persons" :key="person.id">{{xxx}}</li>`
    - v-for 遍历对象
-     - <li v-for="(value, key) in person" :key="key">{{xxx}}</li>
+     - `<li v-for="(value, key) in person" :key="key">{{xxx}}</li>`
    - **注意：遍历的每一项元素需要有一个唯一的key属性：值有id用id，没有id考虑使用index**
 
   6. *v-once*
@@ -362,6 +362,9 @@ directives 值：对象
 template 值：字符串
 作用：定义组件要渲染的模板页面
 
+components 
+作用：定义组件
+
 特点：data和methods上的属性和方法，最终都会直接挂载到vm/this/Vue实例对象上~
 ```
 
@@ -377,15 +380,15 @@ template 值：字符串
 
 * xxx是字符串 ：一般用于类名不确定的单个样式 
 
-  *<p :class="className">xxx</p>*
+  *`<p :class="className">xxx</p>`*
 
 * xxx是对象：一般用于类名确定的单个样式
 
-  *<p :class="{red: isRed, green: !isRed}">xxx</p>*
+  *`<p :class="{red: isRed, green: !isRed}">xxx</p>`*
 
 * xxx是数组：一般用于多个确定的动态类名
 
-  *<p :class="['red', 'green']">xxx</p>*
+  *`<p :class="['red', 'green']">xxx</p>`*
 
 **style绑定：**  *:style="{ color: activeColor, fontSize: fontSize + 'px' }"*
 
@@ -450,7 +453,7 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
 #### 10.过渡和动画
 1. vue提供组件transition，专门用来做过度效果 。会给目标元素添加/移除特定的class
 2. 基本过渡动画的编码
-   * 在目标元素外包裹<transition name="xxx">
+   * 在目标元素外包裹`<transition name="xxx">`
    * 定义class样式
      * 指定过渡样式: transition
      * 指定隐藏时的样式: opacity/其它
@@ -542,6 +545,20 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
         this.person.age = 18
 
 #### 14.组件
+
+
+- 模块
+  - 具有特定功能效果 js 文件
+- 模块化
+  - 当 js 文件采用一个一个模块编写的就是一个模块化应用
+- 组件
+  - 具有特定功能效果的集合体（HTML/CSS/JS...）
+- 组件化
+
+  - 当应用程序采用 一个一个组件编写的就是一个组件化应用
+
+
+
 1. 面试题：为什么组件中的data必须是函数形式？
    Vue解析组件标签时，会找到组件的构造函数，创建组件实例对象，根据实例对象的内容进行显示。
    如果data使用的是对象形式，那么创建组件实例对象，进行数据代理时，组件实例对象代理的data数据是同一个对象。那么只要有一个变化，全都变。
@@ -551,9 +568,18 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
     定义组件 组件构造函数 Vue.extend(options/配置对象)
     注册组件 Vue.component(组件名称, 组件构造函数)
     定义并注册组件（全局组件） Vue.component(组件名称, options/配置对象)
-    options/配置对象 data、methods、computed、watch、filters、directives、template
+    options/配置对象: data、methods、computed、watch、filters、directives、template
     使用组件 以标签组件使用 <xxx></xxx>
     当你使用组件标签时，内部会找到组件的构造函数，创建组件实例对象
+   ```vue
+    // 定义组件
+    const Component = Vue.extend(options); 
+    new Vue({
+      components: { // 注册局部组件 
+        'component': Component
+      }
+    })
+    ```
 
 ## Vue 脚手架
 
@@ -636,7 +662,10 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
       npm i babel-loader @babel/core @babel/preset-env -D 
     - 配置loader  
     ```js
-    {
+    module: {
+    rules: [
+      
+      {
         test: /\.js$/, // 规则对哪些文件生效
         // exclude: /node_modules/, // 排除node_modules文件，其他文件都检查
         include: [resolve("src")], // 包含src下面的文件，只检查包含的文件，而其他文件不检查
@@ -652,6 +681,8 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
           },
         },
       },
+    ],
+    }
     ```
 
 2. 处理css资源
@@ -659,7 +690,10 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
         npm i style-loader css-loader -D
     - 配置loader  
     ```js
-    {
+    module: {
+    rules: [
+      
+      {
         test: /\.css$/,
         include: [resolve("src")],
         use: [
@@ -670,6 +704,8 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
           "css-loader",
         ],
       },
+    ],
+    }
     ```
 
 3. 处理图片资源
@@ -677,7 +713,10 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
         npm i url-loader file-loader -D
     - 配置loader  
     ```js
-    {
+    module: {
+    rules: [
+      
+      {
         test: /\.(png|gif|jpe?g|webp)$/,
         include: [resolve("src")],
         use: {
@@ -698,14 +737,277 @@ Vue的实例从创建到更新到死亡经历的回调函数，由vue内部自�
               [ext] 使用原来文件扩展名
             */
             name: "static/media/[hash:10].[ext]",
+            /*
+              默认情况下 url-loader 对图片解析是ES6模块化
+              ES6模块化识别不了 [object module]
+              关闭ES6模块化，使用commonjs模块化就能识别了~
+            */
+            esModule: false,
           },
         },
       },
+    ],
+    }
     ```
 
 4. 处理html资源
-   
+   - 下载依赖包(plugins既需要下载也需要引入)
+      `npm i html-webpack-plugin -D`
+      `const HtmlWebpackPlugin = require('html-webpack-plugin');`
+   - 配置plugin
+  ```js
+  plugins: [
+    new HtmlWebpackPlugin({
+      // 配置对象
+      // 以 public/index.html 文件为模板，创建基于这个文件的新HTML文件
+      // 新HTML文件会自动引入webpack打包生成JS/CSS
+      template: resolve("public/index.html"),
+    }),]
+  ```
+
+
 5. 处理其他资源（字体图标~）
-   
+   - 下载依赖包
+        `npm i file-loader -D` (之前处理图片资源时，已经下载过了，所以不需要重新下载)
+
+    - 配置loader
+  ```js
+  module: {
+    rules: [
+      
+      {
+        // test: //,  // 不写test，代表匹配所有文件
+        exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/, /\.vue$/],
+        use: {
+          // 作用：将文件加载，原封不动输出出去(只修改名称)
+          // 能处理所有类型文件
+          loader: "file-loader",
+          options: {
+            name: "static/media/[hash:10].[ext]",
+          },
+        },
+      },
+    ],
+  }
+  ```
+
 6. 自动化
-   
+
+   一旦修改源代码，会自动编译，接着自动刷新浏览器，从而看到最新的效果;第一次使用时，自动打开浏览器访问。（自动编译、自动刷新、自动打开浏览器等自动化任务）
+   如果没有自动化，每次写完代码，都需要重新编译打包刷新
+   有了自动化，自动编译打包刷新，我们开发者只需要看浏览器最新的结果,提升开发效率
+
+  - 下载依赖包 
+        `npm i webpack-dev-server -D`
+
+  - 配置
+  ```js
+  devServer: {
+    // contentBase: resolve('build'), // 开发服务器将哪个目录的资源暴露出去
+    contentBase: resolve("dist"), // 开发服务器将哪个目录的资源暴露出去
+    port: 9527, // 服务器端口号
+    host: "localhost", // 服务器域名,
+    // 启动gzip压缩
+    // 这种压缩格式浏览器可以识别，所以可以自动解压（反观zip文件浏览器是不识别，也不能解压的）
+    // 资源会在服务器先进行gzip压缩，文件体积就更小，传输速度就更快。性能更好
+    compress: true,
+    open: true, // 自动打开浏览器
+    // 热模块替换（Hot Module Replacement）
+    // 正常没有HMR功能，一旦有一个文件发生变化，整个页面会全部重新渲染。假设我有10000个文件，因为其中一个文件变化，导致所有文件全部重新编译加载更新，性能很差。
+    // HMR功能：一旦有一个文件发生变化，只会更新这变化的文件，其他文件默认使用之前缓存，速度快，性能好
+    // html文件在将来开发时只有一个，所以不需要HMR功能
+    // css文件，因为使用style-loader处理，默认使用HMR功能
+    // js文件，默认是没有使用HMR（即使开启了HMR，也需要手动写其他代码才可以使用）
+    hot: true,
+    quiet: true, // 启用静默模式，在终端不打印多余信息
+    clientLogLevel: "none", // 在浏览器控制台不打印多余内容
+  },
+  ```
+  - 启动指令
+    webpack 一定会有输出资源（输出到配置文件output.path去），不能启用devServer配置
+    webpack-dev-server 只在内存中编译打包，不会有任何输出，同时能启用devServer配置
+
+  - 配置启动指令
+    在package.json中配置启动指令
+  ```js
+    "scripts": {
+          "dev": "webpack-dev-server", // 代表启动开发环境指令
+          "start": "npm run dev" // 指令简写为npm start
+        }
+  ```
+
+7. devtool 开发调试工具
+
+  所有代码（HTML/CSS/JS）经过webpack编译打包处理，默认会将所有js以eval方式汇总在一个js文件（built.js）中，后面实际运行就是这个文件built.js。代码报错提示的是built.js代码中的错误，开发者不知道到底出了什么错误，不利于调试BUG
+
+  source-map：提供构建后代码与源码映射关系文件
+  浏览器支持 source-map 技术，在webpack打包时会生成一个built.js.map文件，这个文件就会将构建后代码和源码的关系记录起来（源代码在哪个文件第一行 对应 构建后代码第几行）
+  如果构建后built.js代码出错了，浏览器会找到built.js.map文件，根据构建后错误位置，通过built.js.map文件， 就能追踪到源码的错误，从而浏览器提示源码的错误，方便调试
+
+  - 配置
+  ```js
+  devtool: "cheap-module-source-map", // 开发环境
+  devtool: "source-map", // 生产环境
+  ```
+  source-map 提供完整代码映射（包括行和列）
+  cheap-source-map 提供简版代码映射（只包含行，没有列）
+  module-source-map 提供node_modules中代码映射
+  cheap-module-source-map 
+
+8. 进行vue配置（让webpack能够解析vue资源）
+  - 下载
+
+  `npm install -D vue-loader vue-template-compiler`
+
+  vue-loader  处理vue文件
+  vue-template-compiler  编译vue组件模板代码
+
+  - 配置
+  ```js
+  const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
+  module.exports = {
+            module: {
+              rules: [
+                // ... 其它规则
+                {
+                  test: /\.vue$/,
+                  loader: 'vue-loader'
+                },
+                {
+                  test: /\.css$/,
+                  use: [
+                    'vue-style-loader', //修改后 可以应用到 .css文件 及 .vue文件的<style>中
+                    'css-loader'
+                  ]
+                }
+              ]
+            },
+            plugins: [
+              new VueLoaderPlugin(),  // 请确保引入这个插件！
+              // 它的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块。
+              // 例如，如果你有一条匹配 /\.js$/ 的规则，那么它会应用到 .vue 文件里的 <script> 块。
+            ]
+          }
+
+  ```
+
+
+9.  打包public下面的静态资源
+
+  - 下载
+    `npm install copy-webpack-plugin --save-dev`
+    
+  - 配置
+
+```js
+const CopyPlugin = require('copy-webpack-plugin');//引入
+
+plugins:[
+  new CopyPlugin([
+    {
+      from: resolve("public"), // 将public下面的所有文件复制
+      to: resolve("dist"), // 复制到dist目录下去
+      ignore: ["index.html"], // 复制时忽略index.html文件（这个文件已经被HtmlWebpackPlugin处理了）
+    },
+  ]),
+]
+```
+
+10. 配置路径别名
+    
+    ```js
+  resolve: {    // 帮助webpack解析模块（打包的资源）
+    alias: {
+      // 配置文件路径别名
+      // 当你路径写 vue 实际上代表的路径 vue/dist/vue.esm.js
+      // xxx$ 真正写路径时 $ 可以省略不写~
+      // 'vue$': "vue/dist/vue.esm.js",
+      "@": resolve("src"),
+      "@comps": resolve("src/components"),
+    },
+  },
+    ```
+11. 自动补全文件扩展名   
+
+    ```js
+  resolve: {
+    // 解析模块路径时，如果没有文件扩展名，会按照数组顺序自动补全文件扩展名
+    extensions: [".js", ".vue", ".json"],
+  },
+    ```
+
+
+
+
+
+### Vue组件化使用
+
+vue项目默认有一个App.vue组件（应用主组件/根组件）
+  组件里面有三个标签：
+      template 模板页面：里面写模板代码
+        注意：必须有且只有一个根标签
+      script 组件配置对象：里面写js代码
+      style 模板样式（组件样式）：里面写css代码
+            scoped：让样式只在当前组件生效（类似于作用域），实现方法：给当前组件标签中添加特定的字符串
+
+  App.vue组件使用：
+    - 引入其他组件，使用ES6模块化语法，向外暴露一个组件配置对象: data\methods\watch\computed...，
+    - 注册组件  组件名: 组件构造函数，用ES6对象简写形式
+    - 使用组件：通过组件标签使用
+      <HelloWorld />  <!--单标签（常用）-->
+      <HelloWorld></HelloWorld>  <!--双标签-->
+      <hello-world></hello-world> <!--写代码不太方便-->
+
+  index.js使用：
+  index.js是webpack打包的入口文件
+  开发前端/客户端代码，使用都是ES6模块化
+
+  - 引入组件
+    `import Vue from "vue";`   // npm i vue 安装
+    `import App from "./App";`   //webpack中配置路径别名+自动补全扩展名
+    `import Hello from "@comps/HelloWorld";`
+
+  - 注册组件
+    Vue.component("Hello", Hello);  // 全局注册一个组件
+
+    ```js
+    // 方法1：内部会创建App组件实例对象，并渲染到 "#app" 元素上
+      new Vue({
+        render: (h) => h(App),
+      }).$mount("#app");   // 去public/index.html中找
+
+    //方法2：
+      new Vue({
+        components: {
+           App, // 注册App组件
+        },
+        template: "<App />", // 内部渲染App组件内容
+      }).$mount("#app");
+
+    ```
+    方法1是方法2的简写，但方法2直接使用会报错。
+    原因：默认使用Vue的版本是运行时版本（vue.runtime.esm.js）, 这个版本没有编译器，没有编译器就不能解析template，所以报错
+    解决：
+    * 使用render方法去对 template 进行预解析（内部使用 vue-template-compiler 去编译template） --推荐使用，体积更小
+    * 使用带编译器的vue版本  --体积更大
+  
+
+
+### 组件化编码流程（开发代码套路）
+
+1. 拆分组件
+
+- 根据用户页面功能或者变化来拆分组件
+
+  - 用户页面功能：JS 交互功能
+  - 用户页面变化：用户界面更新变化
+
+
+2. 实现静态组件
+
+- 实现前面拆分组件的静态结构和样式，JS 功能先不写
+
+- 结构样式
+
+3. 实现动态组件
