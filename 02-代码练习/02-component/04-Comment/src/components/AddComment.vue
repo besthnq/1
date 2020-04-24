@@ -1,13 +1,19 @@
 <template>
   <div class="col-md-4">
-    <form class="form-horizontal">
+    <form class="form-horizontal" @submit.prevent="handleSubmit">
       <div class="form-group">
         <label>用户名</label>
-        <input type="text" class="form-control" placeholder="用户名" />
+        <input
+          v-model="name"
+          type="text"
+          class="form-control"
+          placeholder="用户名"
+        />
       </div>
       <div class="form-group">
         <label>评论内容</label>
         <textarea
+          v-model="content"
           class="form-control"
           rows="6"
           placeholder="评论内容"
@@ -15,7 +21,7 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-          <button type="button" class="btn btn-default pull-right">提交</button>
+          <button type="submit" class="btn btn-default pull-right">提交</button>
         </div>
       </div>
     </form>
@@ -23,7 +29,31 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    addComment: Function,
+  },
+  data() {
+    return {
+      name: "",
+      content: "",
+    };
+  },
+
+  methods: {
+    handleSubmit() {
+      const name = this.name.trim();
+      const content = this.content.trim();
+      if (!name || !content) {
+        alert("输入内容不能为空~~");
+        return;
+      }
+
+      this.addComment({ id: Date.now(), name, content });
+      this.name = this.content = "";
+    },
+  },
+};
 </script>
 
 <style scoped></style>

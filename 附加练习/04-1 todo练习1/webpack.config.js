@@ -99,7 +99,7 @@ module.exports = {
     quiet: true, //静默模式，在终端不打印过多信息
     clientLogLevel: "none", //在浏览器不打印过多信息
   },
-
+  //cheap-module-source-map
   devtool: "cheap-module-source-map", //开发调试工具，源码映射
   resolve: {
     //帮助webpack解析模块
